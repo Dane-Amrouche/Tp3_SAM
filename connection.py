@@ -28,7 +28,7 @@ class Connexion(Thread):
         
         self.connection.on_connect = self.on_connect
         self.connection.on_publish = self.on_publish
-        #self.connection.on_subscribe = self.on_subscribe
+        self.connection.on_subscribe = self.on_subscribe
         self.connection.on_message = self.on_message
         self.connection.on_disconnect = self.on_disconnect
         #self.connection.connect(self.mqtt_server,self.mqtt_port)
@@ -40,7 +40,7 @@ class Connexion(Thread):
         # start connection
         print("start MQTT connection to '%s:%d' ..." % (self.mqtt_server,self.mqtt_port))
         self.connection.connect(self.mqtt_server,self.mqtt_port)
-        self.connection.subscribe(self.mqqt_sub_topic)
+        #self.connection.subscribe(self.mqqt_sub_topic)
         # launch
         try:
             while not self._shutdownEvent.is_set():
@@ -91,9 +91,10 @@ class Connexion(Thread):
         print("on_message called")
         print("message reçu " + str(msg.payload) + "du topic "+msg.topic)
         payload = json.loads(msg.payload)
-        if(self.unitID is not None and (payload['dest']=="all" or payload['dest'] == str(self.unitID))):
+        print("payload = ",payload)
+        if(payload['unitID']=="all"):
             print("all is received")
-            self.handle_Msg(payload['order'])
+            self.handle_Msg(payload)
 
         
        

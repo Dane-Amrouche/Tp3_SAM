@@ -87,12 +87,13 @@ class Shutter(Connexion):
 
     def handle_Msg(self,payload):
         print("message received")
-        if self.payload['order']=="Up":
+        if payload['order']=="Up":
             self.open()
-        elif self.payload['order'] == "Down":
+        elif payload['order'] == "Down":
             self.close()
-        elif self.payload['order'] == "Stop" :
+        elif payload['order'] == "Stop" :
             self.stop()
+        
         self.curCmd = payload['order']
         data = {
             "unitId" : self.unitID,
